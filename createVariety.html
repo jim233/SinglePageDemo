@@ -1,0 +1,274 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="content/css/angular-ui-tree.css" rel="stylesheet" />
+    <link href="content/css/angular-ui-tree.min.css" rel="stylesheet" />
+    <link href="content/css/bootstrap.css" rel="stylesheet" />
+    <link href="content/css/bootstrap.css.map" rel="stylesheet" />
+    <link href="content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="content/css/bootstrap.min.css.map" rel="stylesheet" />
+    <link href="content/css/bootstrap-theme.css" rel="stylesheet" />
+    <link href="content/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="content/css/bootstrap-theme.min.css.map" rel="stylesheet" />
+    <link href="content/css/icono.min.css" rel="stylesheet" />
+    <link href="content/css/Site.css" rel="stylesheet" />
+    <link href="content/css/tree.css" rel="stylesheet" />
+    <link href="content/css/ui-bootstrap-csp.css" rel="stylesheet" />
+    <link href="content/css/ui-grid.css" rel="stylesheet" />
+    <link href="content/css/uikit.min.css" rel="stylesheet" />
+    <link href="content/css/y-main.css" rel="stylesheet">
+    <link href="content/css/index.css" rel="stylesheet">
+    <script src="Scripts/jquery-2.2.1.min.js"></script>
+    <script src="Scripts/bootstrap.min.js"></script>
+    <script src="Scripts/angular.js"></script>
+    <script src="Scripts/ng-file-upload-bower-12.0.4/ng-file-upload-shim.min.js"></script>
+    <script src="Scripts/ng-file-upload-bower-12.0.4/ng-file-upload.min.js"></script>
+
+    <script src="Scripts/angular-filter.min.js"></script>
+    <script src="Scripts/angular-ui/ui-grid.js"></script>
+    <!--<script src="Scripts/angular-route.min.js"></script>-->
+    <script src="Scripts/angular-ui-router.js"></script>
+    <script src="Scripts/angular-resource.min.js"></script>
+    <script src="Scripts/angular-animate.min.js"></script>
+    <script src="Scripts/ngplus-overlay.js"></script>
+    <script src="Scripts/angular-messages.js"></script>
+    <!--<script src="Scripts/angular-message-format.js"></script>-->
+    <script src="Scripts/angular-ui/ui-bootstrap-tpls.js"></script>
+
+    <script src="Scripts/toastr/toastr.min.js"></script>
+    <script src="Scripts/spa/blocks/logger/logger.module.js"></script>
+    <script src="Scripts/spa/blocks/logger/logger.js"></script>
+    <script src="Scripts/angular-breadcrumb.js"></script>
+    <script src="Scripts/angular-drag.js"></script>
+    <script src="Scripts/angular-ui-tree.js"></script>
+    <script src="Scripts/tree/main.js"></script>
+    <script src="Scripts/tree/handleCtrl.js"></script>
+    <script src="Scripts/tree/nodeCtrl.js"></script>
+    <script src="Scripts/tree/nodesCtrl.js"></script>
+    <script src="Scripts/tree/treeCtrl.js"></script>
+    <script src="Scripts/tree/uiTree.js"></script>
+    <script src="Scripts/tree/uiTreeHandle.js"></script>
+    <script src="Scripts/tree/uiTreeNode.js"></script>
+    <script src="Scripts/tree/uiTreeNodes.js"></script>
+    <script src="Scripts/tree/helper.js"></script>
+
+    <!--<script src=" scripts />spa/directives/pmdUnique.js"></script>-->
+
+    <script src="Scripts/spa/models/SearchFields.js"></script>
+    <script src="Scripts/spa/models/fieldFormModel.js"></script>
+    <script src="Scripts/spa/models/BLVarietyFields.js"></script>
+    <!--<script src="Scripts/spa/app.js"></script>-->
+
+    <script src="Scripts/require.js"></script>
+    <script src="Scripts/angular-require.js"></script>
+    <script src="demo.js"></script>
+    <title>Breeding-Creating Variety</title>
+    <!--[if lt IE 9]>
+      <script src="//cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+<body ng-app="myApp">
+    <div ng-controller="createVarietyCtrl as createVariety">
+        <div style="width:95%; margin-left: auto; margin-right: auto; margin-top: 20px;">
+            <form name="createVarietyForm" class="form-horizontal" novalidate>
+                <div ng-show="createVariety.loadCompleted == true">
+                    <div class="info-head mbt10 ml-15">
+                        <label id="tdHeaderCaption" class="head-title col-lg-4 col-md-4 col-sm-4 col-xs-12" for=""><strong>Create Variety</strong></label>
+                        <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                            <p id="dvMandt">Fields marked <span class="sign-red">*</span> are mandatory for both hybrid and parent lines</p>
+                            <p id="Div1">Fields marked <span class="sign-red">*</span><span class="sign-red">*</span> are mandatory only for the hybrid</p>
+                        </div>
+                    </div>
+                    <div class="table_overflow">
+                        <table class="table table-bordered" style="min-width:500px">
+                            <tr class="active">
+                                <th class="first-column"></th>
+                                <th class="other-column">Variety (SH/LP)</th>
+                                <th class="other-column">Female</th>
+                                <th class="other-column">Male</th>
+                                <th class="other-column">Maintainer</th>
+                            </tr>
+                            <tr>
+                                <td>Specie<span class="sign-red">*</span></td>
+
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <select name="{{speciesType}}" class="form-control" ng-change="createVariety.speciesCodeChanged(speciesType)"
+                                            ng-model="createVariety.varietyModels[speciesType].speciesCode"
+                                            ng-options="option.vch_species_code as option.vch_species_description for option in createVariety.SpeciesOptions"
+                                            ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                        <option></option>
+                                    </select>
+                                </td>
+
+                            </tr>
+                            <!--Special Line End-->
+                            <tr ng-repeat="dynamicFields in createVariety.VarietyDynamicFieldsTypes">
+                                <td>
+                                    {{dynamicFields.vch_LabelName}}<span class="sign-red" ng-show="{{dynamicFields.ch_IsMandatory_Hybrid === 'Y' && dynamicFields.ch_IsMandatory_Parentline === 'Y'}}">*</span>
+                                    <span class="sign-red" ng-show="dynamicFields.ch_IsMandatory_Hybrid === 'Y' && dynamicFields.ch_IsMandatory_Parentline === 'N'">**</span>
+                                </td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <select class="form-control" ng-options="vdOption.dataDisplayName for vdOption in createVariety.VarietyDynamicFieldsData | where:{labelName:dynamicFields.vch_LabelName} | filter_by_output_trait_code:speciesType:dynamicFields.vch_LabelName:createVariety.varietyModels[speciesType].varietyDynamicFields['Output trait']"
+                                            ng-model="createVariety.varietyModels[speciesType].varietyDynamicFields[dynamicFields.vch_LabelName]"
+                                            ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Genetic owner<span class="sign-red">*</span></td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+
+                                    <select class="form-control" ng-model="createVariety.varietyModels[speciesType].geneticOwner"
+                                            ng-options="goOption.vch_genetic_owner_name for goOption in createVariety.GeneticOwnerOptions | filter_genetic_owner:speciesType:createVariety.varietyModels[speciesType].varietyDynamicFields['Output trait']"
+                                            ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Variety team<span class="sign-red">*</span></td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <select class="form-control" ng-model="createVariety.varietyModels[speciesType].varietyTeam"
+                                            ng-options="vtOption.int_variety_team_id as vtOption.vch_team_name for vtOption in createVariety.VarietyTeamOptions"
+                                            ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>NX / line code<span class="sign-red">*</span></td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <input class="form-control" type="text" ng-model="createVariety.varietyModels[speciesType].varietyCode"
+                                           ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Breeding code<span class="sign-red">*</span></td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <input class="form-control" type="text" ng-model="createVariety.varietyModels[speciesType].varietyResearchCode"
+                                           ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Type of cross<span class="sign-red">*</span></td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <select class="form-control" ng-model="createVariety.varietyModels[speciesType].multiplicationIndicator"
+                                            ng-options="tcOption.vch_lookup_value_id as tcOption.vch_lookup_detail_description for tcOption in createVariety.TypeOfCrossOptions"
+                                            ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>GMO</td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <input type="radio" name="{{speciesType}}_gmo" id="{{speciesType}}_yes" ng-model="createVariety.varietyModels[speciesType].isGMO" value="YES"
+                                           ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                    <label for="{{speciesType}}_yes">Yes</label>
+                                    <input type="radio" name="{{speciesType}}_gmo" id="{{speciesType}}_no" ng-model="createVariety.varietyModels[speciesType].isGMO" value="NO"
+                                           ng-click="createVariety.varietyModels[speciesType].gmoTraits=''"
+                                           ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                    <label for="{{speciesType}}_no">NO</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>GM traits</td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <select class="form-control" ng-model="createVariety.varietyModels[speciesType].gmoTraits" ng-disabled="createVariety.varietyModels[speciesType].isGMO === 'NO' || createVariety.varietyModels[speciesType].disabled"
+                                            ng-options="option.vch_lookup_detail_description as option.vch_lookup_detail_description for option in createVariety.GMTraitsOptions[speciesType]">
+                                        <option></option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Is Parent line?<span class="sign-red">*</span></td>
+                                <td>
+                                    <input type="radio" name="isParentLine" id="isParentLine_yes5" ng-model="createVariety.varietyModels['Variety'].isParentLine" value="YES"
+                                           ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                    <label for="isParentLine_yes5">Yes</label>
+                                    <input type="radio" name="isParentLine" id="isParentLine_no5" ng-model="createVariety.varietyModels['Variety'].isParentLine" value="NO"
+                                           ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                    <label for="isParentLine_no5">NO</label>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Line code maintainer</td>
+                                <td>
+                                    <input class="form-control" type="text" ng-model="createVariety.varietyModels['Variety'].maintainerVarietyNumber"
+                                           ng-change="createVariety.lineCodeMaintainerChanged()"
+                                           ng-disabled="createVariety.maintainerVarietyNumberDisabled"
+                                           typeahead-min-length="2"
+                                           typeahead-on-select="createVariety.lineCodeMaintainerChanged()"
+                                           uib-typeahead="vn.vch_variety_code for vn in createVariety.getLineCodes($viewValue) | limitTo:8">
+                                </td>
+                                <td><div ng-show="createVariety.noMaintainerLineCodeMatch && createVariety.varietyModels['Variety'].maintainerVarietyNumber" class="input-error-messages">No Line code maintainer Found</div></td>
+                                <td></td>
+                                <td></td>
+                                <!--<td></td>-->
+                            </tr>
+                            <tr>
+                                <td>Line code female</td>
+                                <td>
+                                    <input class="form-control" type="text" ng-model="createVariety.varietyModels['Variety'].femaleVarietyNumber"
+                                           ng-change="createVariety.lineCodeFemaleChanged()"
+                                           typeahead-min-length="2"
+                                           typeahead-select-on-exact="true"
+                                           typeahead-no-results="createVariety.noFemaleLineCodeMatch"
+                                           typeahead-on-select="createVariety.lineCodeFemaleSelected($item, $model, $label, $event)"
+                                           uib-typeahead="vn.vch_variety_code for vn in createVariety.getLineCodes($viewValue) | limitTo:8">
+                                </td>
+                                <td><div ng-show="createVariety.noFemaleLineCodeMatch && createVariety.varietyModels['Variety'].femaleVarietyNumber" class="input-error-messages">No Line code female Found</div></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Line code male</td>
+                                <td>
+                                    <input class="form-control" type="text" ng-model="createVariety.varietyModels['Variety'].maleVarietyNumber"
+                                           ng-change="createVariety.lineCodeMaleChanged()"
+                                           typeahead-min-length="2"
+                                           typeahead-select-on-exact="true"
+                                           typeahead-no-results="createVariety.noMaleLineCodeMatch"
+                                           typeahead-on-select="createVariety.lineCodeMaleSelected($item, $model, $label, $event)"
+                                           uib-typeahead="vn.vch_variety_code for vn in createVariety.getLineCodes($viewValue) | limitTo:8">
+                                </td>
+                                <td><div ng-show="createVariety.noMaleLineCodeMatch && createVariety.varietyModels['Variety'].maleVarietyNumber" class="input-error-messages">No Line code male Found</div></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Hide genetic owner<span class="sign-red">*</span></td>
+                                <td ng-repeat="speciesType in createVariety.SpeciesTypes">
+                                    <input type="radio" name="{{speciesType}}_hideGeneticOwner" id="{{speciesType}}_hideGeneticOwner_yes" ng-model="createVariety.varietyModels[speciesType].isHideGeneticOwner" value="YES"
+                                           ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                    <label for="{{speciesType}}_hideGeneticOwner_yes">Yes</label>
+                                    <input type="radio" name="{{speciesType}}_hideGeneticOwner" id="{{speciesType}}_hideGeneticOwner_no" ng-model="createVariety.varietyModels[speciesType].isHideGeneticOwner" value="NO"
+                                           ng-disabled="createVariety.varietyModels[speciesType].disabled">
+                                    <label for="{{speciesType}}_hideGeneticOwner_no">NO</label>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="btnGroup  col-lg-12 col-xs-12">
+                            <div class="txtLeft"><a href="javascript:void(0)" id="parentsModal" ng-click="createVariety.openParentsModal('lg')"><u>Show Parents</u></a></div>
+                            <button type="button" id="btnSave" class="btn btn-info smallBtn height25" ng-click="createVariety.saveCheck()" ng-disabled="createVariety.isSaving">Save</button>
+                            <button type="button" id="btnCancel" class="btn btn-info smallBtn height25" ng-click="createVariety.cancel()" ng-disabled="createVariety.isSaving">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
