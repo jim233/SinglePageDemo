@@ -1,0 +1,252 @@
+<!doctype html>
+<html>
+
+	<head>
+		<script src="jquery.js"></script>
+		<script>
+			$(function() {
+				n = 0;
+
+				function imgscoll() {
+					if(n < $(".img_group img").length - 1) {
+						n = n + 1;
+					} else {
+						n = 1; /*准备好的动画次数*/
+						$(".img_group").css({
+							marginLeft: 0
+						});
+					}
+					$(".img_group").animate({
+						marginLeft: -350 * n
+					}, 1000);
+					$(".ctrl_button li").removeClass("current");
+					if(n == $(".img_group img").length - 1) {
+						$(".ctrl_button li").eq(0).addClass("current");
+					} else {
+						$(".ctrl_button li").eq(n).addClass("current");
+					}
+				}
+				t = setInterval(imgscoll, 2000);
+
+				$(".ctrl_button li").click(function() {
+					n = $(this).index();
+					document.title = n;
+					$(".img_group").animate({
+						marginLeft: -350 * n
+					}, 1000);
+					$(".ctrl_button li").removeClass("current");
+					if(n == $(".img_group img").length - 1) {
+						$(".ctrl_button li").eq(0).addClass("current");
+					} else {
+						$(".ctrl_button li").eq(n).addClass("current");
+					}
+				})
+
+				$(".ctrl_button").mouseenter(function() {
+					clearInterval(t);
+				}).mouseleave(function() {
+					t = setInterval(imgscoll, 2000);
+				})
+
+				setTimeout(function() {
+					$(".login").fadeIn(1000, function() {
+						$(".blackbox").show();
+					});
+				}, 5000)
+
+				$(".btn").click(function() {
+					$(".login").fadeOut(600);
+				})
+
+				$(".btn_login").click(function() {
+					UserName = $(".inpuser").val();
+					UserPassword = $(".inpawo").val();
+					if(UserName == "jim" && UserPassword == "123") {
+						$(".blackbox,.login,.tip").hide();
+					} else {
+						alert("不登录就别看了");
+					}
+				})
+
+			})
+		</script>
+		<style>
+			body {
+				margin: 0;
+			}
+			
+			ul {
+				margin: 0;
+				padding: 0;
+				list-style: none;
+			}
+			
+			.wrapper {
+				width: 350px;
+				height: 600px;
+				margin-left: auto;
+				margin-right: auto;
+				position: relative;
+				border: #333 5px solid;
+				overflow: hidden;
+			}
+			
+			.img_group {
+				width: 1750px;
+			}
+			
+			.img_group img {
+				width: 350px;
+				height: 600px;
+				float: left;
+			}
+			
+			.ctrl_button {
+				position: absolute;
+				bottom: 10%;
+				left: 30%;
+			}
+			
+			.ctrl_button li {
+				border: #333 solid 2px;
+				width: 10px;
+				height: 10px;
+				float: left;
+				margin: 10px;
+			}
+			
+			.current {
+				background-color: #333;
+			}
+			
+			.tip {
+				margin-top: 280px;
+				left: 45%;
+				position: absolute;
+				color: #F00;
+			}
+			
+			.login {
+				border: #999 solid 2px;
+				width: 350px;
+				height: 500px;
+				background-color: #666;
+				position: absolute;
+				left: 0%;
+				top: 10%;
+				display: none;
+				color: #FFF;
+				font-size: 28px;
+			}
+			
+			.blackbox {
+				background-color: #000;
+				opacity: 0.9;
+				width: 350px;
+				height: 600px;
+				position: absolute;
+				left: 0%;
+				top: 0%;
+				display: none;
+			}
+			
+			.prompt {
+				margin-top: 50px;
+				margin-left: 100px;
+			}
+			
+			.btn {
+				width: 30px;
+				height: 30px;
+				line-height: 30px;
+				text-align: center;
+				font-size: 24px;
+				position: absolute;
+				right: 0;
+				top: 0;
+				background-color: #FFF;
+				color: black;
+				cursor: pointer;
+			}
+			
+			.input {
+				width: 350px;
+				height: 300px;
+				margin-left: auto;
+				margin-right: auto;
+				margin-top: 50px;
+			}
+			
+			.user {
+				width: 350px;
+				height: 50px;
+			}
+			
+			.userp,
+			.inpuser {
+				float: left;
+				margin-left: 30px;
+			}
+			
+			.password {
+				width: 350px;
+				height: 50px;
+			}
+			
+			.passwordp,
+			.inpawo {
+				float: left;
+				margin-left: 30px;
+			}
+			
+			.btn_login {
+				position: absolute;
+				left: 40%;
+				top: 60%;
+				background-color: #FFF;
+				color: black;
+				cursor: pointer;
+			}
+		</style>
+		<meta charset="utf-8">
+		<title>无标题文档</title>
+	</head>
+
+	<body>
+		<div class="wrapper">
+			<div class="img_group">
+				<img src="images/模特 (20).jpg">
+				<img src="images/模特 (21).jpg">
+				<img src="images/模特 (22).jpg">
+				<img src="images/模特 (24).jpg">
+				<img src="images/模特 (20).jpg">
+			</div>
+			<ul class="ctrl_button">
+				<li class="current"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+			<div class="blackbox"></div>
+			<div class="tip">请登录否则不能观看</div>
+			<div class="login">
+				<div class="prompt">请登录！</div>
+				<div class="btn">X</div>
+				<div class="input">
+					<div class="user">
+						<div class="userp">User: </div>
+						<input class="inpuser" type="text">
+					</div>
+					<div class="password">
+						<div class="passwordp">Password: </div>
+						<input class="inpawo" type="password">
+					</div>
+				</div>
+				<input class="btn_login" value="Login" type="button">
+			</div>
+
+		</div>
+
+	</body>
+
+</html>
