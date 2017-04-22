@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+
+	<body>
+		<script type="text/javascript">
+//			debugger;
+			var a = [1, 2,false,[4, 6,'ss',{"name":"jim"}, [6, 7,true,[5,89,undefined],333,0,71],54],9,10,
+			1, 2,false,[4, 6,'ss',{"name":"jim"}, [6, 7,true,[5,89,null],333,0,71],54],9,10,
+			1, 2,false,[4, 6,'ss',{"name":"jim"}, [6, 7,true,[5,89,1],333,0,NaN],54],9,10,
+			1, 2,false,[4, 6,'ss',{"name":"jim"}, [6, 7,true,[5,89],333,false,71],54],9,10];
+			var aa = [];
+			var config = 0;
+			repeat(a);
+			function repeat(obj) {
+				var bb = [];
+				aa[config] = bb;
+				console.warn(config + ": ");
+				config++;
+				for (var val in obj) {
+					var tmp = typeof obj[val] == "number"
+					|| typeof obj[val] == "boolean"
+					|| typeof obj[val] == "string"
+					|| typeof obj[val] == "undefined"
+					|| ((typeof obj[val] == "object") && !(obj[val] instanceof Array));
+					
+					if (tmp) {//typeof obj[val] == "number" || typeof obj[val] == "string" || typeof obj[val] == "boolean" || typeof obj[val] == "undefined"
+						console.log( obj[val]);
+						bb.push(obj[val]);
+					} else{
+						repeat(obj[val]);
+					}
+				}
+			};
+			console.log("commit: ");
+			console.log(aa);
+			
+			var objtest={
+				classinfo:[
+				{classG:"1",
+				students:[{name:"sttark",age:22},
+						  {name:"jim",age:20}],
+				teacher:"ccc"
+				},
+				{classG:"2",
+				students:[{name:"zhangsan",age:32},
+						  {name:"lisi",age:24}],
+				teacher: "aasas"
+				}]
+			};
+			var xx = [];
+//			xx = objtest.classinfo;
+			for(var val in objtest){xx.push(objtest[val])};
+			
+		</script>
+	</body>
+
+</html>
