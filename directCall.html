@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html ng-app="MyModule">
+
+	<head>
+		<meta charset="utf-8">
+		<title>指令之间的交互</title>
+		<script src="jquery-1.9.1.js"></script>
+		<script src="angular.min.js"></script>
+	</head>
+
+	<body>
+		<div>
+			<div>
+				<superman strength>动感超人---力量</superman>
+			</div>
+			<div>
+				<superman strength speed>动感超人2---力量+敏捷</superman>
+			</div>
+			<div>
+				<superman strength speed light>动感超人3---力量+敏捷+发光</superman>
+			</div>
+		</div>
+		<script>
+			var myModule = angular.module('MyModule', []);
+			myModule.directive('superman', function() {
+				return {
+					scope: {},
+					restrict: 'AE',
+					controller: function($scope) {
+						$scope.abilities = [];
+
+						this.addStrength = function() {
+							$scope.abilities.push("strength");
+						};
+
+						this.addSpeed = function() {
+							$scope.abilities.push('speed');
+						};
+
+						this.addLight = function() {
+							$scope.abilities.push('light');
+						}
+					},
+					link: function(scope, element, attrs) {
+						element.addClass('btn btn-primary');
+						element.bind('mouseenter', function() {
+							console.log(scope.abilities);
+						})
+					}
+				}
+			});
+			myModule.directive('strength', function() {
+				return {
+					require: '^superman',
+					link: function(scope, element, attr, supermanCtl) {
+						supermanCtl.addStrength();
+					}
+
+				}
+			})
+			myModule.directive('speed', function() {
+				return {
+					require: '^superman',
+					link: function(scope, element, attr, supermanCtl) {
+						supermanCtl.addSpeed();
+					}
+				}
+			})
+			myModule.directive('light', function() {
+				return {
+					require: '^superman',
+					link: function(scope, element, attr, supermanCtl) {
+						supermanCtl.addLight();
+					}
+				}
+			})
+		</script>
+	</body>
+
+</html>
