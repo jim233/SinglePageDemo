@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<script src="jquery-1.9.1.js"></script>
+		<script src="angular.min.js"></script>
+		<style>
+			.text_color_red{
+				color: red;
+			}
+			.text_color_gre{
+				color:green;
+			}
+		</style>
+		<script>
+			// 用法angular.bootstrap(element, [modules], [config]);
+			// 创建moudle1
+			var rootMoudle = angular.module('moudle1', []);
+			rootMoudle.controller("controller1", function($scope) {
+				$scope.name = "aty1"
+			});
+
+			// 创建moudle2
+			var m2 = angular.module('moudle2', []);
+			m2.controller("controller2", function($scope, $compile, $timeout) {
+					var vm = this;
+					vm.age='22';
+					$scope.name = "aty2";
+					$scope.sex="male";
+					vm.html1 = '<h1 class="text_color_gre">{{title}}</h1>\
+				                          <ul>\
+				                              <li ng-repeat="item in items">{{item}}</li>\
+				                          </ul>';
+			}).directive('compileX', function($compile) {
+					return {
+						scope: {
+							compileX: '='
+						},
+//						template:'<h1 class="text_color_red">{{title}}</h1>\
+//				                          <ul>\
+//				                              <li ng-repeat="item in items">{{item}}</li>\
+//				                          </ul>',
+						link: function(scope2, elem, attrs) {
+							scope2.title = 'list';
+							scope2.items = ['list1', 'list2', 'list3'];
+							attrs.aaa="jim";
+							scope2.sex = 'female';
+//							vm.html1;
+							console.log(attrs.compileX+"    "+attrs.aaa);
+							elem.html($compile(scope2.compileX)(scope2))
+						}
+					}
+				})
+
+			// 页面加载完成后,再加载模块
+			angular.element(document).ready(function() {
+				angular.bootstrap(document.getElementById("div1"), ["moudle1"]);
+				angular.bootstrap(document.getElementById("div2"), ["moudle2"]);
+			});
+		</script>
+
+	</head>
+
+	<body>
+		<div id="div1" ng-controller="controller1">div1:{{name}}</div>
+		<div id="div2" ng-controller="controller2 as appCtrl">
+			<div>age:{{appCtrl.age}}</div>
+			<div>div2:{{name}}</div>
+			<div compile-x="appCtrl.html1"></div>
+		</div>
+	</body>
+
+</html>
