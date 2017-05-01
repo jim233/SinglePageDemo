@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<script src="http://apps.bdimg.com/libs/angular.js/1.2.16/angular.min.js"></script>
+		<title></title>
+	</head>
+
+	<body>
+		<div ng-controller="myController1">
+			<div class="result">
+				<div>父scope：
+					<div>Say：{{name}}<br>改变父scope的name：<input type="text" value="" ng-model="name" /></div>
+				</div>
+				<div>隔离scope：
+					<div isolated-directive1 name="{{name}}"></div>
+				</div>
+				<div>隔离scope（不使用父scope {{name}}）：
+					<div isolated-directive1 name="name"></div>
+				</div>
+			</div>
+		</div>
+		<div id="">--------------------------------------------</div>
+		<div ng-controller="myController2">
+			<div>父scope
+				<div>Say：{{userBase.name}}
+					<br> 改变父scope的name：
+					<input type="text" value="" ng-model="userBase.name" /></div>
+			</div>
+			<div>隔离scope：
+				<div isolated-directive2 user="userBase"></div>
+			</div>
+		</div>
+		<div id="">--------------------------------------------</div>
+		<div ng-controller="myController3">
+			<div>父scope：
+				<div>Say：{{value}}</div>
+			</div>
+			<div>隔离scope：
+				<div isolated-directive3 action="click()"></div>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var app = angular.module('myApp', []);
+		app.controller("myController1", function($scope) {
+			$scope.name = "hello world";
+		}).directive("isolatedDirective1", function() {
+			return {
+				scope: {
+					name: "@" //这里有@，= ，& 三种情况
+				},
+				template: 'Say：{{name}} <br>改变隔离scope的name：<input type="buttom" value="" ng-model="name" class="ng-pristine ng-valid">'
+			};
+		});
+		
+		app.controller("myController2", function($scope) {
+			$scope.userBase = {
+				name: 'hello',
+				id: 1
+			};
+		}).directive("isolatedDirective2", function() {
+			return {
+				scope: {
+					user: "="
+				},
+				template: 'Say：{{user.name}} <br>改变隔离scope的name：<input type="buttom" value="" ng-model="user.name"/>'
+			}
+		});
+		
+		app.controller("myController3", function($scope) {
+			$scope.value = "hello world";
+			$scope.click = function() {
+				$scope.value = Math.random();
+			};
+		}).directive("isolatedDirective3", function() {
+			return {
+				scope: {
+					action: "&"
+				},
+				template: '<input type="button" value="在directive中执行父scope定义的方法" ng-click="action()"/>'
+			}
+		});
+	</script>
+
+</html>
