@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+	</head>
+
+	<body>
+		<script>
+			var a = ["3", "1", "1", "2", "4", "3", "3", "55", "44", "6"];
+			var b = a.concat();
+			for (var i = 0, y = a.length; i < y; i++) {
+				for (var j = i + 1, z = a.length; j < z; j++) {
+					if (a[i] == b[j]) {
+						b.splice(j, 1);
+						j = j - 1;
+//						console.log(b);
+					}
+				}
+			}
+//			console.log(b);
+			var obj = {};
+			for (var i = 0; i < b.length; i++) {
+				var x = b[i];
+				var k = 0;
+				for (j = 0; j < a.length; j++) {
+					if (x == a[j]) {
+						k++;
+					}
+				}
+				obj[x] = k
+			}
+			console.log(obj);
+		</script>
+		<script>
+			var a1 = ["3", "1", "1", "2", "4", "3", "3", "55", "44", "6"],obj1 = {};
+			for(var i =0;i<a1.length;i++){
+				var x = a1[i];
+				if(obj1[x]){
+					obj1[x]++;
+				}else{
+					obj1[x]=1;
+				}
+			}
+			console.log(obj1);
+			
+			var obj2 = JSON.parse(JSON.stringify(obj1))
+			var vv=[];
+			for(key in obj2){ 
+				while(obj2[key]>0){
+					vv.push(key);
+					obj2[key]--;
+				}
+			};
+			console.log(vv);
+		</script>
+	</body>
+
+</html>
